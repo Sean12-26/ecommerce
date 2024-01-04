@@ -1,0 +1,28 @@
+{%extends 'store/Main.html'%}
+{% load static%}
+{% block content%}
+    <div class='row'>
+        <div class ='col-lg-6'>
+            <img class='thumbnail' src='{{products.imageURL}}'>        
+        </div>
+
+        <div class ='col-lg-4'>
+            <div class='box-element'>
+                <h3>{{products.name}}</h3>
+                <br>
+                <br>
+                <h3>$ {{products.price}}</h3>                 
+                <button data-product ={{products.id}} data-action="add" class='btn btn-outline-secondary add-btn update-cart'>Add</button>
+
+            </div>
+        </div>
+
+
+    </div>
+    <h3> detail</h3>
+    <div>{{products.text}}</div>
+
+
+
+
+{% endblock content%}

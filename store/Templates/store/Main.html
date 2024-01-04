@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+	<title>Easy Shop</title>
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+	<link rel="stylesheet" type="text/css" href="{% static 'CSS/main.css' %}">
+  <meta name='viewport' content='width=device-width,
+  initial-scale=1 ,maximum-scale=1,minimum-scale=1'/>
+
+  <script type='text/javascript'>
+   var user = '{{request.user}}'
+
+   function getToken(name) {
+   var cookieValue = null;
+
+    // 检查是否存在 cookie 且不为空
+    if (document.cookie && document.cookie !== '') {
+          // 将 cookie 字符串分割成数组
+          var cookies = document.cookie.split(';');
+
+          // 遍历每个 cookie
+          for (var i = 0; i < cookies.length; i++){
+              var cookie = cookies[i].trim();
+
+              // 如果找到了以指定名称开头的 cookie
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  // 提取 cookie 值（去除前缀名称并进行解码）
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break; // 找到了就中断循环
+              }
+          }
+      }
+      // 返回获取到的 cookie 值，可能为 null
+      return cookieValue;
+    }
+
+      // 获取名为 'csrftoken' 的 cookie 值
+    var csrftoken = getToken('csrftoken');
+
+    function getCookie(name){
+        // 將 document.cookie 字符串按分號分割成一個 cookie 數組
+        var cookieArr = document.cookie.split(";");
+
+        // 遍歷 cookie 數組中的每個元素
+        for(var i = 0 ;i < cookieArr.length ; i++){
+
+        // 將每個 cookie 字符串再次按等號分割，獲取 cookie 的名稱和值
+          var cookiePair = cookieArr[i].split("=");
+
+        // 檢查當前 cookie 的名稱是否與目標名稱匹配（忽略前後的空格）
+          if(name == cookiePair[0].trim()) {
+            return decodeURIComponent(cookiePair[1]);
+          }
+        }
+        return null;
+    }
+      // 從 'cart' 的 cookie 中解析 JSON 字符串，轉換為 JavaScript 對象
+    var cart = JSON.parse(getCookie('cart'))
+        // 檢查是否成功解析 'cart' cookie，如果未定義（即不存在），則執行以下代碼
+
+    if(cart == undefined){
+      // 初始化一個空對象表示購物車
+           cart={}
+           console.log('Cart was created!')
+           // 將更新後的購物車對象轉換為 JSON 字符串，存儲為 'cart' 的 cookie
+           document.cookie = 'cart='+ JSON.stringify(cart) +';domain=;path=/'
+     }
+    console.log('cart is:',cart)
+  
+  </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand" href="{% url 'store' %}">EasyShop</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="{% url 'store' %}">Store <span class="sr-only">(current)</span></a>
+          </li>
+
+        </ul>
+    
+        <div class="form-inline my-2 my-lg-0">
+              <a href="http://127.0.0.1:8000/admin" class="btn btn-warning">Login</a>      
+                <a href="{% url 'cart' %}">
+                     <img  id="cart-icon" src="{% static 'images/cart.png' %}">
+                </a>
+              <p id="cart-total">{{cartItems}}</p>
+           
+        </div>
+      </div>
+    </nav>
+
+      <div class="container">
+            <br>
+            {% block content %}
+
+
+            {% endblock content %}
+      </div> 
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  
+  <script type= "text/javascript" src='{% static "js/cart.js" %}'></script>
+</body>
+</html>
